@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Jeffrey Singer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet" />
+<script src="assets/image-slot.js"></script>
+<style>
+  :root {
+    --bg: #0a0a0b;
+    --ink: #ededec;
+    --muted: #9a9a9d;
+    --faint: #65656a;
+    --line: rgba(255, 255, 255, 0.10);
+    --line-soft: rgba(255, 255, 255, 0.06);
+    --serif: "Cormorant Garamond", Georgia, "Times New Roman", serif;
+    --sans: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    --maxw: 1240px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--sans);
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* subtle film grain */
+  body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 100;
+    opacity: 0.025;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 40px; }
+
+  .label {
+    font-family: var(--sans);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.26em;
+    text-transform: uppercase;
+    color: var(--faint);
+  }
+
+  /* ---------- Top bar ---------- */
+  header {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 50;
+    transition: background 0.4s ease, border-color 0.4s ease, backdrop-filter 0.4s ease;
+    border-bottom: 1px solid transparent;
+  }
+  header.scrolled {
+    background: rgba(10, 10, 11, 0.72);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--line-soft);
+  }
+  .bar {
+    max-width: var(--maxw);
+    margin: 0 auto;
+    padding: 22px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .mono {
+    font-family: var(--serif);
+    font-size: 22px;
+    letter-spacing: 0.08em;
+    color: var(--ink);
+    text-decoration: none;
+    border: 1px solid var(--line);
+    width: 44px; height: 44px;
+    display: grid; place-items: center;
+    border-radius: 50%;
+    transition: border-color 0.3s ease, color 0.3s ease;
+  }
+  .mono:hover { border-color: rgba(255,255,255,0.4); }
+  nav.top { display: flex; gap: 34px; }
+  nav.top a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    transition: color 0.3s ease;
+  }
+  nav.top a:hover { color: var(--ink); }
+
+  /* ---------- Hero ---------- */
+  .hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1.05fr 1fr;
+    align-items: stretch;
+    position: relative;
+  }
+  .hero-text {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 140px 0 80px 40px;
+    max-width: 720px;
+    margin-left: auto;
+    padding-right: 56px;
+    position: relative;
+    z-index: 3;
+  }
+  .hero-text .label { margin-bottom: 30px; }
+  .hero h1 {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: clamp(58px, 8vw, 116px);
+    line-height: 0.92;
+    letter-spacing: -0.01em;
+    color: #fff;
+  }
+  .hero h1 .ln { display: block; }
+  .hero .role {
+    margin-top: 28px;
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: clamp(22px, 2.4vw, 30px);
+    color: var(--muted);
+    line-height: 1.3;
+  }
+  .hero .lede {
+    margin-top: 30px;
+    max-width: 440px;
+    color: var(--muted);
+    font-size: 16px;
+    line-height: 1.75;
+  }
+  .hero-cta {
+    margin-top: 44px;
+    display: flex;
+    gap: 14px;
+    align-items: center;
+  }
+  .btn {
+    font-family: var(--sans);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 15px 26px;
+    border-radius: 2px;
+    transition: all 0.3s ease;
+  }
+  .btn-solid { background: var(--ink); color: #0a0a0b; }
+  .btn-solid:hover { background: #fff; }
+  .btn-ghost { color: var(--muted); border: 1px solid var(--line); }
+  .btn-ghost:hover { color: var(--ink); border-color: rgba(255,255,255,0.4); }
+
+  .hero-media {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  .hero-media .sky {
+    display: block;
+    flex: 1 1 auto;
+    min-height: 0;
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-media .sky::after {
+    content: "";
+    position: absolute;
+    left: 0; right: 0; bottom: 0;
+    height: 42%;
+    pointer-events: none;
+    background: linear-gradient(0deg, var(--bg) 0%, rgba(10,10,11,0.6) 32%, rgba(10,10,11,0) 100%);
+  }
+  .hero-media .sky img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    object-position: 60% 50%;
+    display: block;
+  }
+  .hero-media .portrait {
+    position: relative;
+    flex: 0 0 32%;
+    min-height: 220px;
+    overflow: hidden;
+  }
+  .hero-media .portrait img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    object-position: 58% 22%;
+    display: block;
+  }
+  .hero-media .portrait figcaption {
+    position: absolute;
+    left: 26px; bottom: 20px;
+    z-index: 3;
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 21px;
+    color: #fff;
+    text-shadow: 0 1px 14px rgba(0,0,0,0.7);
+  }
+  .hero-media .portrait::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(0deg, rgba(10,10,11,0.6) 0%, rgba(10,10,11,0) 45%);
+  }
+  /* seam: fade the left edge of the media into the page bg */
+  .hero-media::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 4;
+    pointer-events: none;
+    background: linear-gradient(90deg, var(--bg) 0%, rgba(10,10,11,0.5) 13%, rgba(10,10,11,0) 38%);
+  }
+
+  .scroll-cue {
+    position: absolute;
+    bottom: 36px;
+    left: 40px;
+    z-index: 4;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: var(--faint);
+    font-size: 10px;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+  }
+  .scroll-cue .line {
+    width: 46px; height: 1px;
+    background: var(--faint);
+    transform-origin: left;
+    animation: pulse 2.6s ease-in-out infinite;
+  }
+  @keyframes pulse { 0%,100% { transform: scaleX(0.5); opacity: 0.4; } 50% { transform: scaleX(1); opacity: 1; } }
+
+  /* ---------- Section frame ---------- */
+  section.block { padding: 130px 0; border-top: 1px solid var(--line-soft); }
+  .sec-head {
+    display: flex;
+    align-items: baseline;
+    gap: 18px;
+    margin-bottom: 56px;
+  }
+  .sec-head .num { font-family: var(--serif); font-size: 18px; color: var(--faint); }
+  .sec-head h2 {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: clamp(34px, 5vw, 58px);
+    line-height: 1;
+    color: #fff;
+    letter-spacing: -0.01em;
+  }
+
+  /* ---------- About ---------- */
+  .about-grid {
+    display: grid;
+    grid-template-columns: 0.85fr 1.15fr;
+    gap: 70px;
+  }
+  .about-aside { position: relative; }
+  .about-aside .label { margin-bottom: 22px; }
+  .focus-list { list-style: none; }
+  .focus-list li {
+    font-family: var(--serif);
+    font-size: 26px;
+    color: var(--ink);
+    padding: 16px 0;
+    border-bottom: 1px solid var(--line-soft);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .focus-list li span { font-family: var(--sans); font-size: 12px; color: var(--faint); letter-spacing: 0.1em; }
+  .about-body p {
+    font-family: var(--serif);
+    font-size: 25px;
+    line-height: 1.55;
+    color: #fff;
+    margin-bottom: 26px;
+    text-wrap: pretty;
+  }
+  .about-body p:last-child { margin-bottom: 0; }
+
+  /* ---------- Skyline ---------- */
+  .skyline {
+    position: relative;
+    padding: 0;
+    border-top: 1px solid var(--line-soft);
+  }
+  .skyline image-slot {
+    display: block;
+    width: 100%;
+    height: 68vh;
+    min-height: 460px;
+  }
+  .skyline .cap {
+    position: absolute;
+    left: 40px; bottom: 38px;
+    z-index: 5;
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    pointer-events: none;
+  }
+  .skyline .cap .place {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 28px;
+    color: #fff;
+  }
+  .skyline .grad {
+    position: absolute;
+    inset: 0;
+    z-index: 4;
+    pointer-events: none;
+    background: linear-gradient(0deg, rgba(10,10,11,0.85) 0%, rgba(10,10,11,0) 40%),
+                linear-gradient(90deg, rgba(10,10,11,0.5) 0%, rgba(10,10,11,0) 30%);
+  }
+
+  /* ---------- Contact ---------- */
+  .contact { border-top: 1px solid var(--line-soft); }
+  .contact-head {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: clamp(40px, 6vw, 76px);
+    line-height: 1.0;
+    color: #fff;
+    letter-spacing: -0.01em;
+    max-width: 14ch;
+    margin-bottom: 64px;
+  }
+  .contact-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    border-top: 1px solid var(--line);
+  }
+  .ci {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 34px 36px 34px 0;
+    border-bottom: 1px solid var(--line-soft);
+    text-decoration: none;
+    position: relative;
+    transition: padding-left 0.35s cubic-bezier(.2,.7,.3,1);
+  }
+  .ci:nth-child(odd) { border-right: 1px solid var(--line-soft); padding-left: 0; }
+  .ci:nth-child(even) { padding-left: 40px; }
+  .ci .val {
+    font-family: var(--serif);
+    font-size: clamp(24px, 3vw, 34px);
+    color: var(--ink);
+    transition: color 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .ci .arrow { opacity: 0; transform: translateX(-8px); transition: all 0.35s cubic-bezier(.2,.7,.3,1); color: var(--faint); }
+  .ci:hover .val { color: #fff; }
+  .ci:hover .arrow { opacity: 1; transform: translateX(0); }
+
+  footer.foot {
+    padding: 40px 0 60px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: var(--faint);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+  }
+  footer.foot .label { color: var(--faint); }
+
+  /* reveal */
+  .reveal { opacity: 0; transform: translateY(26px); transition: opacity 1s cubic-bezier(.2,.7,.3,1), transform 1s cubic-bezier(.2,.7,.3,1); }
+  .reveal.in { opacity: 1; transform: none; }
+
+  @media (max-width: 920px) {
+    .hero { grid-template-columns: 1fr; }
+    .hero-media { position: relative; height: auto; }
+    .hero-media::before { display: none; }
+    .hero-media .sky { flex: none; height: 44vh; min-height: 280px; }
+    .hero-media .portrait { flex: none; height: 40vh; min-height: 280px; }
+    .hero-text { padding: 40px 40px 70px; margin: 0; max-width: none; min-height: auto; }
+    .hero-text .label { margin-bottom: 18px; }
+    .scroll-cue { display: none; }
+    .about-grid { grid-template-columns: 1fr; gap: 44px; }
+    .contact-grid { grid-template-columns: 1fr; }
+    .ci, .ci:nth-child(odd), .ci:nth-child(even) { padding: 26px 0; border-right: none; }
+  }
+  @media (max-width: 560px) {
+    .wrap { padding: 0 22px; }
+    .bar { padding: 18px 22px; }
+    .hero-text { padding: 36px 22px 60px; }
+    .skyline .cap { left: 22px; }
+    section.block { padding: 90px 0; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .reveal { opacity: 1; transform: none; transition: none; }
+    .scroll-cue .line { animation: none; }
+    html { scroll-behavior: auto; }
+  }
+</style>
+</head>
+<body>
+
+  <header id="topbar">
+    <div class="bar">
+      <a href="#top" class="mono" aria-label="Jeffrey Singer">JS</a>
+      <nav class="top">
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="top">
+
+    <!-- HERO -->
+    <section class="hero" data-screen-label="Hero">
+      <div class="hero-text">
+        <div class="label">FINANCE · BANKING · AI · TECHNOLOGY · REAL ESTATE</div>
+        <h1><span class="ln">Jeffrey</span><span class="ln">Singer</span></h1>
+        <p class="role">Investor, banker, operator &amp; entrepreneur</p>
+        <p class="lede">Building and financing companies at the intersection of technology and capital markets.</p>
+        <div class="hero-cta">
+          <a href="#contact" class="btn btn-solid">Get in touch</a>
+          <a href="#about" class="btn btn-ghost">About</a>
+        </div>
+      </div>
+      <div class="hero-media">
+        <figure class="sky">
+          <img src="/nyc-skyline.jpg" alt="New York City skyline at night" />
+        </figure>
+        <figure class="portrait">
+          <img src="images/jeffrey-singer.jpg" alt="Portrait of Jeffrey Singer" />
+          <figcaption>Jeffrey Singer</figcaption>
+        </figure>
+      </div>
+      <div class="scroll-cue"><span class="line"></span>Scroll</div>
+    </section>
+
+    <!-- ABOUT -->
+    <section class="block" id="about" data-screen-label="About">
+      <div class="wrap">
+        <div class="sec-head reveal">
+          <span class="num">01</span>
+          <h2>About</h2>
+        </div>
+        <div class="about-grid">
+          <aside class="about-aside reveal">
+            <div class="label">Focus</div>
+            <ul class="focus-list">
+              <li>Finance <span>01</span></li>
+              <li>Banking <span>02</span></li>
+              <li>Real Estate <span>03</span></li>
+              <li>Technology &amp; AI
+04</li>
+            </ul>
+          </aside>
+          <div class="about-body reveal">
+            <p>Jeff has been involved in the successful financing of a broad range of public and private companies across almost every industry with a strong focus on technology, energy, specialty finance/FinTech, IT services, digital commerce, ed-tech, healthcare services and consumer brands. Jeff specializes in structuring debt financings for emerging growth companies to maximize their funding availability while minimizing dilution to shareholders.</p>
+            <p>
+</p>
+            <p>Jeff served as Head of Debt Capital Markets at ThinkEquity and Joseph Gunnar and as Managing Director of Dragonfly Capital Partners, where he ran the New York office of the firm for over 10 years. Jeff has structured over one billion dollars of debt financing proposals over the course of his career. Mr. Singer holds a BS from University of Wisconsin and his MBA from Fordham University Graduate School of Business.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section class="block contact" id="contact" data-screen-label="Contact">
+      <div class="wrap">
+        <div class="sec-head reveal">
+          <span class="num">02</span>
+          <h2>Contact</h2>
+        </div>
+        <h3 class="contact-head reveal">Reach out to connect.</h3>
+        <div class="contact-grid reveal">
+          <a class="ci">
+            <span class="label">Phone</span>
+            <span class="val">917&nbsp;846&nbsp;3970 <span class="arrow">&rarr;</span></span>
+          </a>
+          <a class="ci">
+            <span class="label">Email</span>
+            <span class="val"><span class="__cf_email__" data-cfemail="e08a858686a08a8586868493898e878592ce838f8d">Jeff@jeffdsinger.com</span>
+→</span>
+          </a>
+          <a class="ci" href="https://x.com/jeffdsinger" target="_blank" rel="noopener">
+            <span class="label">X</span>
+            <span class="val">@jeffdsinger <span class="arrow">&rarr;</span></span>
+          </a>
+          <a class="ci" href="https://www.linkedin.com/in/jeffrey-singer-1312b1/" target="_blank" rel="noopener">
+            <span class="label">LinkedIn</span>
+            <span class="val">/jeffrey-singer
+→</span>
+          </a>
+        </div>
+        <footer class="foot">
+          <span class="label">Jeffrey Singer</span>
+          <span class="label">New York City</span>
+        </footer>
+      </div>
+    </section>
+
+  </main>
+
+  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+    // sticky bar state
+    const bar = document.getElementById('topbar');
+    const onScroll = () => bar.classList.toggle('scrolled', window.scrollY > 40);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+
+    // scroll reveals
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+    }, { threshold: 0.18 });
+    document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+  </script>
+
+</body>
+</html>
